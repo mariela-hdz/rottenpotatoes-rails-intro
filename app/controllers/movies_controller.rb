@@ -10,10 +10,18 @@ class MoviesController < ApplicationController
     @all_ratings = Movie.all_ratings
     if params[:ratings] == nil
       @ratings_to_show = []
-    else
+    else 
       @ratings_to_show = params[:ratings].keys
     end
-    @movies = Movie.with_ratings(@ratings_to_show)
+    if params[:sortByMovieTitle]
+      @movies = Movie.with_ratings(@ratings_to_show).order(:title)
+      @clickedTitle = "bg-warning"
+    elsif params[:sortByReleaseDate]
+      @movies = Movie.with_ratings(@ratings_to_show).order(:release_date)
+      @clickedRelease = "bg-warning"
+    else
+      @movies = Movie.with_ratings(@ratings_to_show)
+    end
   end
 
   def new
