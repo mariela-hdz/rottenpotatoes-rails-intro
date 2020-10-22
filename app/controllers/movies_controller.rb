@@ -18,7 +18,7 @@ class MoviesController < ApplicationController
       @ratings_to_show = session[:ratings]
 #       redirect_to action: :index, ratings: session[:ratings].to_h {|s| [s, 1]}, sortByMovieTitle: session[:sortByMovieTitle], sortByReleaseDate: session[:sortByReleaseDate]
     else 
-      @ratings_to_show = []
+      @ratings_to_show = @all_ratings
     end
 
     if params[:sortByMovieTitle]
