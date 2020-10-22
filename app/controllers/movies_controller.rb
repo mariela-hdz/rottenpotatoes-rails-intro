@@ -34,9 +34,11 @@ class MoviesController < ApplicationController
     elsif session[:sortByMovieTitle]
       @movies = Movie.with_ratings(@ratings_to_show).order(:title)
       @clickedTitle = "bg-warning"
+      redirect_to action: :index, sortByMovieTitle: true
     elsif session[:sortByReleaseDate]
       @movies = Movie.with_ratings(@ratings_to_show).order(:release_date)
       @clickedRelease = "bg-warning"
+      redirect_to action: :index, sortByReleaseDate: true
     else
       @movies = Movie.with_ratings(@ratings_to_show)
       session.delete(:sortByMovieTitle)
