@@ -8,32 +8,20 @@ class MoviesController < ApplicationController
 
   def index
     @all_ratings = Movie.all_ratings
-    
-#       if session[:ratings]
-#         params[:ratings] = session[:ratings]
-#       end
-#       if session[:sortByMovieTitle]
-#         params[:ratings] = session[:sortByMovieTitle]
-#       end
-#       if session[:sortByReleaseDate]
-#         params[:ratings] = session[:sortByReleaseDate]
-#       end    
-    if session[:ratings]
-      @ratings_to_show = session[:ratings].keys
-    elsif params[:ratings]
+    if params[:ratings]
       @ratings_to_show = params[:ratings].keys
       session[:ratings] = @ratings_to_show
+    elsif params[:commit] == "Refresh" && params[:ratings].blank?
+      session.delete(:ratings)
+      @ratings_to_show = []
+    elsif session[:ratings]
+      @ratings_to_show = session[:ratings]
     else 
       @ratings_to_show = []
     end
     
-    if session[:sortByMovieTitle]
-      @movies = Movie.with_ratings(@ratings_to_show).order(:title)
-      @clickedTitle = "bg-warning"
-    elsif session[:sortByReleaseDate]
-      @movies = Movie.with_ratings(@ratings_to_show).order(:release_date)
-      @clickedRelease = "bg-warning"
-    elsif params[:sortByMovieTitle]
+
+    if params[:sortByMovieTitle]
       @movies = Movie.with_ratings(@ratings_to_show).order(:title)
       @clickedTitle = "bg-warning"
       session[:sortByMovieTitle] = true
@@ -43,6 +31,12 @@ class MoviesController < ApplicationController
       @clickedRelease = "bg-warning"
       session[:sortByReleaseDate] = true
       session[:sortByMovieTitle] = false
+    elsif session[:sortByMovieTitle]
+      @movies = Movie.with_ratings(@ratings_to_show).order(:title)
+      @clickedTitle = "bg-warning"
+    elsif session[:sortByReleaseDate]
+      @movies = Movie.with_ratings(@ratings_to_show).order(:release_date)
+      @clickedRelease = "bg-warning"
     else
       @movies = Movie.with_ratings(@ratings_to_show)
       session.delete(:sortByMovieTitle)
