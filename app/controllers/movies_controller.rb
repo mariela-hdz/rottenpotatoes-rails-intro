@@ -16,11 +16,10 @@ class MoviesController < ApplicationController
       @ratings_to_show = []
     elsif session[:ratings]
       @ratings_to_show = session[:ratings]
-      redirect_to action: :index, ratings: session[:ratings].to_h {|s| [s, 1]}
+      redirect_to action: :index, ratings: session[:ratings].to_h {|s| [s, 1]}, sortByMovieTitle: session[:sortByMovieTitle], sortByReleaseDate: session[:sortByReleaseDate]
     else 
       @ratings_to_show = []
     end
-    
 
     if params[:sortByMovieTitle]
       @movies = Movie.with_ratings(@ratings_to_show).order(:title)
