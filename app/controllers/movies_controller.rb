@@ -16,6 +16,7 @@ class MoviesController < ApplicationController
       @ratings_to_show = []
     elsif session[:ratings]
       @ratings_to_show = session[:ratings]
+      redirect_to action: :index, ratings: session[:ratings]
     else 
       @ratings_to_show = []
     end
